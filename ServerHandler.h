@@ -8,12 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+
+#define BASE_URL @"http://104.200.31.209:6543/"
+#define GET_QUESTIONS_URL_COMPONENT @"question"
+#define GET_RESPONSES_URL_COMPOTENT @"responses"
+#define POST_RESPONSE_URL_COMPONTENT @"respond"
+
+//typedef id (^SimpleResponse)(parameterTypes);
+
 @class Prompt;
+
 @interface ServerHandler : NSObject
 
 +(instancetype)sharedInstance;
 
--(Prompt*)nextPrompt;
+-(void)nextPrompt:(void (^)(Prompt *prompt))success;
 -(id)responsesForPrompt:(Prompt*)prompt;
 -(void)respondToPrompt:(Prompt*)prompt withOption:(NSUInteger)option;
 
