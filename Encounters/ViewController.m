@@ -55,6 +55,7 @@
     self.blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
     self.blurView.frame = self.backgroundImage.bounds;
     [self.backgroundImage addSubview:self.blurView];
+    self.blurView.hidden = YES;
 }
 
 
@@ -68,6 +69,7 @@
     self.currentPrompt = prompt;
 
     self.blurView.hidden = NO;
+    self.blurView.frame = self.view.bounds;
     self.blurView.alpha = 0.0;
     [UIView animateWithDuration:0.5
                           delay:0.0 options:UIViewAnimationOptionCurveEaseInOut

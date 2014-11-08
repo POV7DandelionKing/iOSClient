@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,11 +17,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="backgroundReckroom.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="8rN-XO-lGg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundReckroom.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="8rN-XO-lGg">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="8rN-XO-lGg" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="0FI-cq-PlO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="8rN-XO-lGg" secondAttribute="trailing" constant="-16" id="2ci-zT-qdv"/>
+                            <constraint firstItem="8rN-XO-lGg" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="-20" id="enL-yw-Xq1"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="8rN-XO-lGg" secondAttribute="bottom" id="l0U-V6-gEQ"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="backgroundImage" destination="8rN-XO-lGg" id="s8l-KD-r9q"/>
