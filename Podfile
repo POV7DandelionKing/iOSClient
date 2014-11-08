@@ -3,11 +3,13 @@
 
 source 'https://github.com/CocoaPods/Specs.git'
 
+
+
 target 'Encounters' do
 pod 'AFNetworking'
 end
 
 target 'EncountersTests' do
-
+pod 'AFNetworking'
 end
 

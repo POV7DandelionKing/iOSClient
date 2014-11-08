@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+#import "ServerHandler.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface EncountersTests : XCTestCase
 
@@ -25,16 +27,70 @@
     [super tearDown];
 }
 
-- (void)testExample {
+
+-(void)testLobbyGet {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"get lobby"];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:@"lobby"];
+
+    [manager GET:urlString
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"JSON: %@", responseObject);
+             [expectation fulfill];
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"JSON: %@", error);
+             [expectation fulfill];
+         }];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
+}
+
+
+-(void)testJoin {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"join"];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:@"join"];
+    NSDictionary *parameters = @{@"scene": @"basement", @"avatar": @"dude1"};
+
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+
+    [manager POST:urlString
+      parameters:parameters
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"JSON: %@", responseObject);
+             [expectation fulfill];
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"JSON: %@", error);
+             XCTFail(@"error");
+             [expectation fulfill];
+         }];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
+}
+
+- (void)testBlahBlah {
     // This is an example of a functional test case.
+    XCTestExpectation *expectation = [self expectationWithDescription:@"get prompt"];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:GET_QUESTIONS_URL_COMPONENT];
+
+    //    [AFJSONResponseSerializer serializer];
+
+    [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        [expectation fulfill];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        [expectation fulfill];
+    }];
+
+
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
+
+
+//    [[ServerHandler sharedInstance]nextPrompt];
     XCTAssert(YES, @"Pass");
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
-}
+
 
 @end
