@@ -15,6 +15,7 @@
 		6B7254CA1A0E900900374977 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254C81A0E900900374977 /* LaunchScreen.xib */; };
 		6B7254D61A0E900900374977 /* EncountersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7254D51A0E900900374977 /* EncountersTests.m */; };
 		6B7254E21A0E950D00374977 /* backgroundReckroom.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254E11A0E950D00374977 /* backgroundReckroom.jpg */; };
+		6B7254E51A0EA67B00374977 /* Prompt.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7254E41A0EA67B00374977 /* Prompt.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,8 @@
 		6B7254D41A0E900900374977 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B7254D51A0E900900374977 /* EncountersTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EncountersTests.m; sourceTree = "<group>"; };
 		6B7254E11A0E950D00374977 /* backgroundReckroom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = backgroundReckroom.jpg; sourceTree = "<group>"; };
+		6B7254E31A0EA67B00374977 /* Prompt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prompt.h; sourceTree = "<group>"; };
+		6B7254E41A0EA67B00374977 /* Prompt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Prompt.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +68,8 @@
 		6B7254AD1A0E900800374977 = {
 			isa = PBXGroup;
 			children = (
+				6B7254E31A0EA67B00374977 /* Prompt.h */,
+				6B7254E41A0EA67B00374977 /* Prompt.m */,
 				6B7254B81A0E900900374977 /* Encounters */,
 				6B7254D21A0E900900374977 /* EncountersTests */,
 				6B7254B71A0E900900374977 /* Products */,
@@ -224,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B7254C21A0E900900374977 /* ViewController.m in Sources */,
+				6B7254E51A0EA67B00374977 /* Prompt.m in Sources */,
 				6B7254BF1A0E900900374977 /* AppDelegate.m in Sources */,
 				6B7254BC1A0E900900374977 /* main.m in Sources */,
 			);
