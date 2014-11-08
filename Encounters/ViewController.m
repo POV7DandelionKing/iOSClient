@@ -41,7 +41,9 @@
     self.optionButtons = [optionsArray copy];
 
 
-    [self performSelector:@selector(displayPrompt) withObject:self afterDelay:0.5];
+
+    Prompt *debugPrompt = [Prompt _debugResponse];
+    [self performSelector:@selector(displayPrompt:) withObject:debugPrompt afterDelay:0.5];
 }
 
 -(void)setBlurred:(BOOL)blurred {
@@ -71,7 +73,7 @@
     [self.backgroundImage addSubview:self.blurView];
 }
 
--(void)displayPrompt {
+-(void)displayPrompt:(Prompt*)prompt {
     self.blurView.hidden = NO;
     self.blurView.alpha = 0.0;
     [UIView animateWithDuration:0.5
@@ -80,15 +82,14 @@
                          self.blurView.alpha = 1.0;
                      } completion:^(BOOL finished) {
 
-    Prompt *debugPrompt = [Prompt _debugResponse];
-    self.promptLabel.text = debugPrompt.prompt;
+    self.promptLabel.text = prompt.prompt;
     [self.promptLabel sizeToFit];
     self.promptLabel.center = CGPointMake(self.view.center.x, 60);
     self.promptLabel.hidden = NO;
 
     int idx = 0;
     CGPoint nextButtonCenter = CGPointMake(self.view.center.x, CGRectGetMaxY(self.promptLabel.frame) + 60);
-    for (NSString* option in debugPrompt.responses) {
+    for (NSString* option in prompt.responses) {
         UIButton *button = self.optionButtons[idx];
         [button setTitle:option forState:UIControlStateNormal];
         [button sizeToFit];
