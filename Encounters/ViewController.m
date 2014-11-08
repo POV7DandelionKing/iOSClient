@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "Prompt.h"
+#import "ServerHandler.h"
 
 @interface ViewController ()
 
@@ -16,12 +17,14 @@
 @property (strong, nonatomic) UILabel* promptLabel;
 @property (strong, nonatomic) NSArray* optionButtons;
 @property (nonatomic, getter=isBlurred) BOOL blurred;
+@property (strong, nonatomic) Prompt *currentPrompt;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [ServerHandler sharedInstance];
     // Do any additional setup after loading the view, typically from a nib.
     [self setupBlurView];
     self.promptLabel = [[UILabel alloc]initWithFrame:CGRectZero];
@@ -40,26 +43,7 @@
     }
     self.optionButtons = [optionsArray copy];
 
-
-
-    Prompt *debugPrompt = [Prompt _debugResponse];
-    [self performSelector:@selector(displayPrompt:) withObject:debugPrompt afterDelay:0.5];
-}
-
--(void)setBlurred:(BOOL)blurred {
-    if (blurred != _blurred) {
-        _blurred = blurred;
-        if (blurred) {
-            [self.backgroundImage addSubview:self.blurView];
-            self.blurView.alpha = 0.0;
-//            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                self.blurView.alpha = 1.0;
-//            } completion:NULL];
-//        };
-        }else {
-            self.blurView.alpha = 0.0;
-        }
-    }
+    [self performSelector:@selector(displayNextPrompt) withObject:nil afterDelay:3.0];
 }
 
 #define INTER_BUTTON_PADDING 10
@@ -73,7 +57,16 @@
     [self.backgroundImage addSubview:self.blurView];
 }
 
+
+-(void)displayNextPrompt {
+    [[ServerHandler sharedInstance]nextPrompt:^(Prompt *prompt) {
+        [self displayPrompt:prompt];
+    }];
+}
+
 -(void)displayPrompt:(Prompt*)prompt {
+    self.currentPrompt = prompt;
+
     self.blurView.hidden = NO;
     self.blurView.alpha = 0.0;
     [UIView animateWithDuration:0.5
@@ -123,6 +116,7 @@
 }
 
 -(void)optionButtonPressed:(UIButton*)sender {
+    [[ServerHandler sharedInstance]respondToPrompt:self.currentPrompt withOption:sender.tag];
     [self hidePrompt];
 }
 

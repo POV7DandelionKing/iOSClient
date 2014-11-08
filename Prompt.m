@@ -21,4 +21,19 @@
     return prompt;
 }
 
++(instancetype)promptWithJSONObject:(NSDictionary*)json {
+    Prompt *prompt = [[Prompt alloc]init];
+    json = json[@"question"];
+    prompt.identifier = json[@"id"];
+    prompt.prompt = json[@"prompt"];
+
+    NSMutableArray *responses = [NSMutableArray new];
+    for (NSDictionary *dict in (NSArray*)json[@"responses"]) {
+        [responses addObject:dict[@"text"]];
+    }
+    prompt.responses = [responses copy];
+
+    return prompt;
+}
+
 @end
