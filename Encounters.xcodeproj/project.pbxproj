@@ -14,6 +14,7 @@
 		6B7254C71A0E900900374977 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254C61A0E900900374977 /* Images.xcassets */; };
 		6B7254CA1A0E900900374977 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254C81A0E900900374977 /* LaunchScreen.xib */; };
 		6B7254D61A0E900900374977 /* EncountersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7254D51A0E900900374977 /* EncountersTests.m */; };
+		6B7254E21A0E950D00374977 /* backgroundReckroom.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254E11A0E950D00374977 /* backgroundReckroom.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		6B7254CF1A0E900900374977 /* EncountersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EncountersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B7254D41A0E900900374977 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B7254D51A0E900900374977 /* EncountersTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EncountersTests.m; sourceTree = "<group>"; };
+		6B7254E11A0E950D00374977 /* backgroundReckroom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = backgroundReckroom.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				6B7254C11A0E900900374977 /* ViewController.m */,
 				6B7254C31A0E900900374977 /* Main.storyboard */,
 				6B7254C61A0E900900374977 /* Images.xcassets */,
+				6B7254E11A0E950D00374977 /* backgroundReckroom.jpg */,
 				6B7254C81A0E900900374977 /* LaunchScreen.xib */,
 				6B7254B91A0E900900374977 /* Supporting Files */,
 			);
@@ -202,6 +205,7 @@
 				6B7254C51A0E900900374977 /* Main.storyboard in Resources */,
 				6B7254CA1A0E900900374977 /* LaunchScreen.xib in Resources */,
 				6B7254C71A0E900900374977 /* Images.xcassets in Resources */,
+				6B7254E21A0E950D00374977 /* backgroundReckroom.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
