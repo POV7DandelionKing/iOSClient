@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSString* token;
 @property (strong, nonatomic) Prompt* currentPrompt;
 @property (strong, nonatomic) NSMutableArray* notifiedResponses;
+@property (strong, nonatomic) NSTimer *pollTimer;
 @end
 
 @implementation ServerHandler
@@ -41,6 +42,28 @@
                          forHTTPHeaderField:@"Authorization"];
     }
     return manager;
+}
+
+- (void)startPolling
+{
+    self.pollTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+                                                      target:self
+                                                    selector:@selector(poll:)
+                                                    userInfo:nil
+                                                     repeats:YES];
+}
+
+- (void)stopPolling
+{
+    if (self.pollTimer) {
+        [self.pollTimer invalidate];
+    }
+    self.pollTimer = nil;
+}
+
+- (void)poll:(NSTimer*)timer
+{
+    [self fetchResponses];
 }
 
 - (void)fetchAvatars:(void (^)(NSArray *avatars, NSString* scene))avatarsBlock
@@ -87,11 +110,10 @@
           success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
               NSLog(@"response %@", responseObject);
               self.notifiedResponses = [NSMutableArray array];
-              if (NO) {
-                  // XXX what test for JSON null?
+              if ([responseObject[@"question"] isKindOfClass:[NSNull class]]) {
                   [self.serverDelegate promptsDone];
               } else {
-                  Prompt *prompt = [Prompt promptWithJSONObject: responseObject];
+                  Prompt *prompt = [Prompt promptWithJSONObject:responseObject];
                   if (!self.currentPrompt) {
                       self.currentPrompt = prompt;
                       [self.serverDelegate nextPromptReceived:prompt];
@@ -142,9 +164,8 @@
     for (NSDictionary *response in responses) {
         NSString *userId = response[@"user"];
         NSString *answer = response[@"response"];
-        if (NO) {
-            // XXX how to test for JSON null
-            finished = YES;
+        if ([answer isKindOfClass:[NSNull class]]) {
+            finished = NO;
         } else {
             if (![self.notifiedResponses containsObject:userId]) {
                 [self.notifiedResponses addObject:userId];
@@ -153,8 +174,11 @@
         }
     }
     if (finished) {
+        [self stopPolling];
         [self.serverDelegate allResponsesReceivedForPrompt:self.currentPrompt];
         [self fetchQuestion];
+    } else {
+        [self startPolling];
     }
 }
 

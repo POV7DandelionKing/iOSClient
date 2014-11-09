@@ -69,6 +69,7 @@
 
 
 -(void)displayPrompt:(Prompt*)prompt {
+    // XXX doesn't work when called a second time, why?
     self.currentPrompt = prompt;
 
     self.blurView.hidden = NO;
@@ -144,8 +145,7 @@
 
 - (void)nextPromptReceived:(Prompt*)prompt
 {
-    NSLog(@"got new question");
-    [self displayPrompt:prompt];
+    [self performSelector:@selector(displayPrompt:) withObject:prompt afterDelay:1.0];
 }
 
 - (void)promptsDone
