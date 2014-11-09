@@ -115,13 +115,9 @@
     [UIView animateWithDuration:0.5 animations:^{
         self.joinButton.alpha = 0.0;
         self.filmButton.alpha = 0.0;
-        self.tvFrame.alpha = 0.0;
-        self.tvView.alpha = 0.0;
     } completion:^(BOOL finished) {
         self.joinButton.hidden = YES;
         self.filmButton.hidden = YES;
-        self.tvView.hidden = YES;
-        self.tvFrame.hidden = YES;
     }];
 }
 
@@ -141,6 +137,8 @@
                      animations:^{
                          self.blurView.alpha = 1.0;
                          self.promptLabel.alpha = 1.0;
+                         self.tvFrame.alpha = 0;
+                         self.tvView.alpha = 0;
                      } completion:^(BOOL finished) {
 
     int idx = 0;
@@ -171,6 +169,8 @@
                              button.alpha = 0.0;
                          }
                          self.blurView.alpha = 0.0;
+                         self.tvView.alpha = 1.0;
+                         self.tvFrame.alpha = 1.0;
                      } completion:^(BOOL finished) {
 //                         self.promptLabel.hidden = YES;
                          self.blurView.hidden = YES;
