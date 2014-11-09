@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "Prompt.h"
 #import "ServerHandler.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface ViewController ()
 
@@ -21,8 +22,10 @@
 @property (strong, nonatomic) Prompt* nextPrompt;
 @property (strong, nonatomic) NSDate *shakeStart;
 @property (strong, nonatomic) NSDictionary* responses;
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 @property (weak, nonatomic) IBOutlet UIButton *filmButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
+
 
 
 @end
@@ -113,13 +116,9 @@
     [UIView animateWithDuration:0.5 animations:^{
         self.joinButton.alpha = 0.0;
         self.filmButton.alpha = 0.0;
-        self.tvFrame.alpha = 0.0;
-        self.tvView.alpha = 0.0;
     } completion:^(BOOL finished) {
         self.joinButton.hidden = YES;
         self.filmButton.hidden = YES;
-        self.tvView.hidden = YES;
-        self.tvFrame.hidden = YES;
     }];
 }
 
@@ -139,6 +138,8 @@
                      animations:^{
                          self.blurView.alpha = 1.0;
                          self.promptLabel.alpha = 1.0;
+                         self.tvFrame.alpha = 0;
+                         self.tvView.alpha = 0;
                      } completion:^(BOOL finished) {
 
     int idx = 0;
@@ -169,6 +170,8 @@
                              button.alpha = 0.0;
                          }
                          self.blurView.alpha = 0.0;
+                         self.tvView.alpha = 1.0;
+                         self.tvFrame.alpha = 1.0;
                      } completion:^(BOOL finished) {
 //                         self.promptLabel.hidden = YES;
                          self.blurView.hidden = YES;
@@ -185,7 +188,7 @@
     [self performSelector:@selector(showResponses) withObject:nil afterDelay:2.0];
 }
 
-#pragma mark - showing responses 
+#pragma mark - showing responses
 
 -(void)showResponses {
     NSTimeInterval displayPeriod = 5.0;
@@ -278,11 +281,40 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void)playSound:(NSString*)filename
+{
+    NSURL *url = [[NSBundle mainBundle] URLForResource:filename withExtension:@"aac"];
+    NSError *error;
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    [self.audioPlayer play];
+}
+
+
 # pragma mark shake
 
 - (void)shake:(CGFloat)seconds
 {
+    if (self.blurView.hidden) {
+        NSLog(@"Shake, but not ready to respond");
+        return;
+    }
+    if (![self.currentPrompt canShake]) {
+        NSLog(@"Shake, but question doesn't allow shaking");
+        return;
+    }
     NSLog(@"shake of magnitude %f", seconds);
+    if (seconds < 0.5) {
+        [self playSound:@"Disappointment"];
+    } else {
+        [self playSound:@"Grunt"];
+    }
+    // XXX when you groan you respond with the first option
+    if (self.currentPrompt) {
+        [[ServerHandler sharedInstance] respondToPrompt:self.currentPrompt withOption:0];
+        [self hidePrompt];
+        [self performSelector:@selector(showResponses) withObject:nil afterDelay:2.0];
+    }
 }
 
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
