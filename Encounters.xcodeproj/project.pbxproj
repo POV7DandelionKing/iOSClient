@@ -43,6 +43,8 @@
 		B0E0F8491A0FE58F00AC4849 /* still0011.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F83C1A0FE58F00AC4849 /* still0011.jpg */; };
 		B0E0F84A1A0FE58F00AC4849 /* still0012.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F83D1A0FE58F00AC4849 /* still0012.jpg */; };
 		B0E0F84B1A0FE58F00AC4849 /* still0013.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F83E1A0FE58F00AC4849 /* still0013.jpg */; };
+		B0E0F84F1A10008D00AC4849 /* Grunt.aac in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F84D1A10008D00AC4849 /* Grunt.aac */; };
+		B0E0F8501A10008D00AC4849 /* Disappointment.aac in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F84E1A10008D00AC4849 /* Disappointment.aac */; };
 		CFFA6D40BEC3445F4BE0AF6C /* libPods-Encounters.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC634843D9364939F7404F2B /* libPods-Encounters.a */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +107,8 @@
 		B0E0F83C1A0FE58F00AC4849 /* still0011.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = still0011.jpg; path = stills/still0011.jpg; sourceTree = "<group>"; };
 		B0E0F83D1A0FE58F00AC4849 /* still0012.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = still0012.jpg; path = stills/still0012.jpg; sourceTree = "<group>"; };
 		B0E0F83E1A0FE58F00AC4849 /* still0013.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = still0013.jpg; path = stills/still0013.jpg; sourceTree = "<group>"; };
+		B0E0F84D1A10008D00AC4849 /* Grunt.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = Grunt.aac; sourceTree = "<group>"; };
+		B0E0F84E1A10008D00AC4849 /* Disappointment.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = Disappointment.aac; sourceTree = "<group>"; };
 		BAC26E4819CF443216B7CC64 /* Pods-Encounters.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Encounters.release.xcconfig"; path = "Pods/Target Support Files/Pods-Encounters/Pods-Encounters.release.xcconfig"; sourceTree = "<group>"; };
 		D051BDBD2D1CBFA03DAF7066 /* Pods-EncountersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EncountersTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EncountersTests/Pods-EncountersTests.release.xcconfig"; sourceTree = "<group>"; };
 		EC634843D9364939F7404F2B /* libPods-Encounters.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Encounters.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +157,7 @@
 		6B7254B81A0E900900374977 /* Encounters */ = {
 			isa = PBXGroup;
 			children = (
+				B0E0F84C1A0FFFDD00AC4849 /* audio */,
 				B0E0F8311A0FE57500AC4849 /* stills */,
 				B0E0F82F1A0FDB3B00AC4849 /* self.mp4 */,
 				B0E0F82A1A0FDB3000AC4849 /* Video.storyboard */,
@@ -247,6 +252,15 @@
 				B0E0F83E1A0FE58F00AC4849 /* still0013.jpg */,
 			);
 			name = stills;
+			sourceTree = "<group>";
+		};
+		B0E0F84C1A0FFFDD00AC4849 /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				B0E0F84D1A10008D00AC4849 /* Grunt.aac */,
+				B0E0F84E1A10008D00AC4849 /* Disappointment.aac */,
+			);
+			name = audio;
 			sourceTree = "<group>";
 		};
 		CBE7AB4FF6E2406FC5C4D864 /* Pods */ = {
@@ -352,10 +366,12 @@
 				6B7254EA1A0EF14E00374977 /* GrandfatherStudyInkColin2.tif in Resources */,
 				B0E0F8461A0FE58F00AC4849 /* still0008.jpg in Resources */,
 				B0E0F8411A0FE58F00AC4849 /* still0003.jpg in Resources */,
+				B0E0F8501A10008D00AC4849 /* Disappointment.aac in Resources */,
 				B0E0F8481A0FE58F00AC4849 /* still0010.jpg in Resources */,
 				6B7254CA1A0E900900374977 /* LaunchScreen.xib in Resources */,
 				B0E0F84B1A0FE58F00AC4849 /* still0013.jpg in Resources */,
 				6B7254C71A0E900900374977 /* Images.xcassets in Resources */,
+				B0E0F84F1A10008D00AC4849 /* Grunt.aac in Resources */,
 				B0E0F84A1A0FE58F00AC4849 /* still0012.jpg in Resources */,
 				6B7254F31A0EF94D00374977 /* Grandma'sTV0728.png in Resources */,
 				6B8F45E51A0FE86800131956 /* ArleneHead@2x.png in Resources */,
