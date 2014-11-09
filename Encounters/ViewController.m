@@ -62,6 +62,8 @@
     self.blurView.hidden = YES;
 }
 
+- (IBAction)startEncounterAction:(UIButton *)sender {
+}
 
 -(void)displayNextPrompt {
     [[ServerHandler sharedInstance]nextPrompt:^(Prompt *prompt) {

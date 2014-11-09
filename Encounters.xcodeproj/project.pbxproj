@@ -21,6 +21,7 @@
 		6B7254EA1A0EF14E00374977 /* GrandfatherStudyInkColin2.tif in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254E91A0EF14E00374977 /* GrandfatherStudyInkColin2.tif */; };
 		6B7254EE1A0EF1CA00374977 /* DodgeDartChapt1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254ED1A0EF1CA00374977 /* DodgeDartChapt1.jpg */; };
 		6B7254F11A0EF22600374977 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7254F01A0EF22600374977 /* SplashViewController.m */; };
+		6B7254F31A0EF94D00374977 /* Grandma'sTV0728.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254F21A0EF94D00374977 /* Grandma'sTV0728.png */; };
 		CFFA6D40BEC3445F4BE0AF6C /* libPods-Encounters.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC634843D9364939F7404F2B /* libPods-Encounters.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		6B7254ED1A0EF1CA00374977 /* DodgeDartChapt1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DodgeDartChapt1.jpg; sourceTree = "<group>"; };
 		6B7254EF1A0EF22600374977 /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
 		6B7254F01A0EF22600374977 /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
+		6B7254F21A0EF94D00374977 /* Grandma'sTV0728.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Grandma'sTV0728.png"; sourceTree = "<group>"; };
 		BAC26E4819CF443216B7CC64 /* Pods-Encounters.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Encounters.release.xcconfig"; path = "Pods/Target Support Files/Pods-Encounters/Pods-Encounters.release.xcconfig"; sourceTree = "<group>"; };
 		D051BDBD2D1CBFA03DAF7066 /* Pods-EncountersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EncountersTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EncountersTests/Pods-EncountersTests.release.xcconfig"; sourceTree = "<group>"; };
 		EC634843D9364939F7404F2B /* libPods-Encounters.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Encounters.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +98,7 @@
 				6B7254E71A0EB1EF00374977 /* ServerHandler.m */,
 				6B7254E91A0EF14E00374977 /* GrandfatherStudyInkColin2.tif */,
 				6B7254ED1A0EF1CA00374977 /* DodgeDartChapt1.jpg */,
+				6B7254F21A0EF94D00374977 /* Grandma'sTV0728.png */,
 				6B7254B81A0E900900374977 /* Encounters */,
 				6B7254D21A0E900900374977 /* EncountersTests */,
 				6B7254B71A0E900900374977 /* Products */,
@@ -264,6 +267,7 @@
 				6B7254EA1A0EF14E00374977 /* GrandfatherStudyInkColin2.tif in Resources */,
 				6B7254CA1A0E900900374977 /* LaunchScreen.xib in Resources */,
 				6B7254C71A0E900900374977 /* Images.xcassets in Resources */,
+				6B7254F31A0EF94D00374977 /* Grandma'sTV0728.png in Resources */,
 				6B7254E21A0E950D00374977 /* backgroundReckroom.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
