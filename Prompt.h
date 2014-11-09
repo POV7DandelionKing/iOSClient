@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Prompt : NSObject
-@property (strong, nonatomic) NSNumber* identifier;
+@property (strong, nonatomic) NSString* identifier;
 @property (strong, nonatomic) NSString* prompt;
 @property (strong, nonatomic) NSArray* responses;
 

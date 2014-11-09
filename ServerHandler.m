@@ -13,6 +13,8 @@
 
 @interface ServerHandler ()
 @property (strong, nonatomic) NSString* token;
+@property (strong, nonatomic) Prompt* currentPrompt;
+@property (strong, nonatomic) NSMutableArray* notifiedResponses;
 @end
 
 @implementation ServerHandler
@@ -22,55 +24,142 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         singleton = [[self alloc]init];
-        [singleton _fetchToken];
     });
     return singleton;
 }
 
--(void)_fetchToken {
+
+- (AFHTTPRequestOperationManager*)manager
+{
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSString *urlString = [BASE_URL stringByAppendingString:@"join"];
-    NSDictionary *parameters = @{@"scene": @"basement", @"avatar": @"dude1"};
-
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json"
+                     forHTTPHeaderField:@"Accept"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    if (self.token) {
+        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.token]
+                         forHTTPHeaderField:@"Authorization"];
+    }
+    return manager;
+}
 
+- (void)fetchAvatars:(void (^)(NSArray *avatars, NSString* scene))avatarsBlock
+{
+    AFHTTPRequestOperationManager *manager = [self manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:GET_LOBBY_URL_COMPONENT];
+    [manager GET:urlString
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+             NSLog(@"response %@", responseObject);
+             NSArray *sessions = [responseObject objectForKey:@"sessions"];
+             NSDictionary *session = sessions[0];
+             NSArray *avatars = session[@"avatars"];
+             NSString *sceneId = session[@"id"];
+             avatarsBlock(avatars, sceneId);
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"failure %@", error);
+         }];
+}
+
+
+- (void)joinWithAvatar:(NSString*)avatarId scene:(NSString *)scene
+{
+    AFHTTPRequestOperationManager *manager = [self manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:POST_JOIN_URL_COMPONENT];
     [manager POST:urlString
-       parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSLog(@"JSON: %@", responseObject);
-              NSDictionary *responseDict = (NSDictionary*)responseObject;
-              self.token = responseDict[@"token"];
+       parameters:@{@"avatar":avatarId, @"scene":scene}
+          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+              NSLog(@"response %@", responseObject);
+              self.token = [responseObject objectForKey:@"token"];
+              [self fetchQuestion];
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              NSLog(@"JSON: %@", error);
+              NSLog(@"failure %@", error);
           }];
 }
 
-
-
--(void)nextPrompt:(void (^)(Prompt *prompt))success {
-
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.token] forHTTPHeaderField:@"Authorization"];
-    NSString *urlString = [BASE_URL stringByAppendingString:GET_QUESTIONS_URL_COMPONENT];
-
-    [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        Prompt *prompt = [Prompt promptWithJSONObject: responseObject];
-        success(prompt);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
+- (void)fetchQuestion
+{
+    AFHTTPRequestOperationManager *manager = [self manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:GET_QUESTION_URL_COMPONENT];
+    [manager GET:urlString
+      parameters:nil
+          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+              NSLog(@"response %@", responseObject);
+              self.notifiedResponses = [NSMutableArray array];
+              if (NO) {
+                  // XXX what test for JSON null?
+                  [self.serverDelegate promptsDone];
+              } else {
+                  Prompt *prompt = [Prompt promptWithJSONObject: responseObject];
+                  if (!self.currentPrompt) {
+                      self.currentPrompt = prompt;
+                      [self.serverDelegate nextPromptReceived:prompt];
+                  } else {
+                      if (![self.currentPrompt.identifier isEqualToString:prompt.identifier]) {
+                          self.currentPrompt = prompt;
+                          [self.serverDelegate nextPromptReceived:prompt];
+                      }
+                  }
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              NSLog(@"failure %@", error);
+          }];
 }
 
--(void)respondToPrompt:(Prompt *)prompt withOption:(NSUInteger)option {
-
+- (void)respondToPrompt:(Prompt*)prompt withOption:(NSUInteger)option
+{
+    AFHTTPRequestOperationManager *manager = [self manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:POST_RESPONSE_URL_COMPONTENT];
+    [manager POST:urlString
+       parameters:@{@"question":prompt.identifier, @"response":[NSString stringWithFormat:@"%zd", option]}
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSLog(@"response %@", responseObject);
+              [self parseResponses:responseObject[@"responses"]];
+              [self fetchQuestion];
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              NSLog(@"failure %@", error);
+          }];
 }
 
--(id)responsesForPrompt:(Prompt *)prompt {
-    return nil;
+- (void)fetchResponses
+{
+    AFHTTPRequestOperationManager *manager = [self manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:GET_RESPONSES_URL_COMPOTENT];
+    [manager POST:urlString
+       parameters:@{@"question":self.currentPrompt.identifier}
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSLog(@"response %@", responseObject);
+              [self parseResponses:responseObject[@"responses"]];
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              NSLog(@"failure %@", error);
+          }];
 }
+
+- (void)parseResponses:(NSArray*)responses
+{
+    BOOL finished = YES;
+    for (NSDictionary *response in responses) {
+        NSString *userId = response[@"user"];
+        NSString *answer = response[@"response"];
+        if (NO) {
+            // XXX how to test for JSON null
+            finished = YES;
+        } else {
+            if (![self.notifiedResponses containsObject:userId]) {
+                [self.notifiedResponses addObject:userId];
+                [self.serverDelegate responseReceivedForPrompt:self.currentPrompt avatar:userId response:answer];
+            }
+        }
+    }
+    if (finished) {
+        [self.serverDelegate allResponsesReceivedForPrompt:self.currentPrompt];
+        [self fetchQuestion];
+    }
+}
+
+
+
 
 
 @end
