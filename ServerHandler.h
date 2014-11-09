@@ -21,8 +21,7 @@
 @class Prompt;
 
 @protocol ServerDelegate
-- (void)responseReceivedForPrompt:(Prompt*)prompt avatar:(NSString*)avatar response:(NSString*)response;
-- (void)allResponsesReceivedForPrompt:(Prompt*)prompt;
+- (void)responseReceived:(NSDictionary*)responses forPrompt:(Prompt*)prompt;
 - (void)nextPromptReceived:(Prompt*)prompt;
 - (void)promptsDone;
 @end

@@ -184,15 +184,11 @@
 
 #pragma mark ServerDelegate
 
-- (void)responseReceivedForPrompt:(Prompt*)prompt avatar:(NSString*)avatar response:(NSString*)response
+- (void)responseReceived:(NSDictionary *)responses forPrompt:(Prompt *)prompt
 {
-    NSLog(@"got response for %@ %@", avatar, response);
+    NSLog(@"got response for %@ %@", responses, prompt);
 }
 
-- (void)allResponsesReceivedForPrompt:(Prompt*)prompt
-{
-    NSLog(@"done with question");
-}
 
 - (void)nextPromptReceived:(Prompt*)prompt
 {

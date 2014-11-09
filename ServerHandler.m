@@ -127,14 +127,15 @@
 
 - (void)parseResponses:(NSArray*)responses
 {
+    NSMutableDictionary *resp = [NSMutableDictionary dictionary];
     for (NSDictionary *response in responses) {
         NSString *userId = response[@"user"];
         NSString *answer = response[@"response"];
         if (![answer isKindOfClass:[NSNull class]]) {
-            [self.serverDelegate responseReceivedForPrompt:self.currentPrompt avatar:userId response:answer];
+            resp[userId] = answer;
         }
     }
-    [self.serverDelegate allResponsesReceivedForPrompt:self.currentPrompt];
+    [self.serverDelegate responseReceived:resp forPrompt:(Prompt*)self.currentPrompt];
 }
 
 
