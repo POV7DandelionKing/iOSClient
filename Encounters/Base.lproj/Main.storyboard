@@ -196,8 +196,11 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundReckroom.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="8rN-XO-lGg">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vMn-uj-wMb">
-                                <rect key="frame" x="140" y="239" width="80" height="60"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="still0001.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="vMn-uj-wMb">
+                                <rect key="frame" x="41" y="205" width="75" height="48"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Grandma'sTV0728.png" translatesAutoresizingMaskIntoConstraints="NO" id="ovW-7o-B2T">
+                                <rect key="frame" x="29" y="189" width="113" height="80"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AiF-UE-aw4">
                                 <rect key="frame" x="46" y="474" width="174" height="49"/>
@@ -245,6 +248,8 @@
     <resources>
         <image name="DodgeDartChapt1.jpg" width="717" height="275"/>
         <image name="GrandfatherStudyInkColin2.tif" width="987" height="750"/>
+        <image name="Grandma'sTV0728.png" width="1685" height="1338"/>
         <image name="backgroundReckroom.jpg" width="1721" height="1200"/>
+        <image name="still0001.jpg" width="640" height="480"/>
     </resources>
 </document>
