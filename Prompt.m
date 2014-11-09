@@ -35,4 +35,9 @@
     return prompt;
 }
 
+- (BOOL)canShake
+{
+    return [self.responses containsObject:@"{Shake device to groan}"];
+}
+
 @end

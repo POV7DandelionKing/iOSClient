@@ -294,6 +294,10 @@
 
 - (void)shake:(CGFloat)seconds
 {
+    if (![self.currentPrompt canShake]) {
+        NSLog(@"Shake, but question doesn't allow shaking");
+        return;
+    }
     NSLog(@"shake of magnitude %f", seconds);
     if (seconds < 0.5) {
         [self playSound:@"Disappointment"];

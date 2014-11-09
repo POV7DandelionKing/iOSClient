@@ -16,4 +16,5 @@
 
 +(instancetype)_debugResponse;
 +(instancetype)promptWithJSONObject:(NSDictionary*)json;
+- (BOOL)canShake;
 @end
