@@ -197,7 +197,7 @@
         [self performSelector:@selector(showResponseforAvatar:) withObject:avatarIdentifier afterDelay:delayForNextResponse];
         delayForNextResponse += displayPeriod;
     }
-    [self performSelector:@selector(displayPrompt:) withObject:self.nextPrompt afterDelay:(delayForNextResponse + displayPeriod)];
+    [self performSelector:@selector(displayPrompt:) withObject:self.nextPrompt afterDelay:delayForNextResponse];
 }
 
 -(void)showResponseforAvatar:(NSString*)avatarIdentifier {
