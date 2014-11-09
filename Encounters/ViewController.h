@@ -10,6 +10,6 @@
 #import "ServerHandler.h"
 @interface ViewController : UIViewController <ServerDelegate>
 
-
+- (IBAction)showVideo:(id)sender;
 @end
 

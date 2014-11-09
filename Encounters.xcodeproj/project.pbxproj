@@ -22,6 +22,9 @@
 		6B7254EE1A0EF1CA00374977 /* DodgeDartChapt1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254ED1A0EF1CA00374977 /* DodgeDartChapt1.jpg */; };
 		6B7254F11A0EF22600374977 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7254F01A0EF22600374977 /* SplashViewController.m */; };
 		6B7254F31A0EF94D00374977 /* Grandma'sTV0728.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B7254F21A0EF94D00374977 /* Grandma'sTV0728.png */; };
+		B0E0F82D1A0FDB3000AC4849 /* Video.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82A1A0FDB3000AC4849 /* Video.storyboard */; };
+		B0E0F82E1A0FDB3000AC4849 /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82B1A0FDB3000AC4849 /* VideoViewController.m */; };
+		B0E0F8301A0FDB3B00AC4849 /* self.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82F1A0FDB3B00AC4849 /* self.mp4 */; };
 		CFFA6D40BEC3445F4BE0AF6C /* libPods-Encounters.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC634843D9364939F7404F2B /* libPods-Encounters.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +65,10 @@
 		6B7254EF1A0EF22600374977 /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
 		6B7254F01A0EF22600374977 /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
 		6B7254F21A0EF94D00374977 /* Grandma'sTV0728.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Grandma'sTV0728.png"; sourceTree = "<group>"; };
+		B0E0F82A1A0FDB3000AC4849 /* Video.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Video.storyboard; sourceTree = "<group>"; };
+		B0E0F82B1A0FDB3000AC4849 /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
+		B0E0F82C1A0FDB3000AC4849 /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
+		B0E0F82F1A0FDB3B00AC4849 /* self.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = self.mp4; sourceTree = "<group>"; };
 		BAC26E4819CF443216B7CC64 /* Pods-Encounters.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Encounters.release.xcconfig"; path = "Pods/Target Support Files/Pods-Encounters/Pods-Encounters.release.xcconfig"; sourceTree = "<group>"; };
 		D051BDBD2D1CBFA03DAF7066 /* Pods-EncountersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EncountersTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EncountersTests/Pods-EncountersTests.release.xcconfig"; sourceTree = "<group>"; };
 		EC634843D9364939F7404F2B /* libPods-Encounters.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Encounters.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +126,10 @@
 		6B7254B81A0E900900374977 /* Encounters */ = {
 			isa = PBXGroup;
 			children = (
+				B0E0F82F1A0FDB3B00AC4849 /* self.mp4 */,
+				B0E0F82A1A0FDB3000AC4849 /* Video.storyboard */,
+				B0E0F82B1A0FDB3000AC4849 /* VideoViewController.m */,
+				B0E0F82C1A0FDB3000AC4849 /* VideoViewController.h */,
 				6B7254BD1A0E900900374977 /* AppDelegate.h */,
 				6B7254BE1A0E900900374977 /* AppDelegate.m */,
 				6B7254C01A0E900900374977 /* ViewController.h */,
@@ -268,6 +279,8 @@
 				6B7254CA1A0E900900374977 /* LaunchScreen.xib in Resources */,
 				6B7254C71A0E900900374977 /* Images.xcassets in Resources */,
 				6B7254F31A0EF94D00374977 /* Grandma'sTV0728.png in Resources */,
+				B0E0F82D1A0FDB3000AC4849 /* Video.storyboard in Resources */,
+				B0E0F8301A0FDB3B00AC4849 /* self.mp4 in Resources */,
 				6B7254E21A0E950D00374977 /* backgroundReckroom.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -353,6 +366,7 @@
 				6B7254E51A0EA67B00374977 /* Prompt.m in Sources */,
 				6B7254BF1A0E900900374977 /* AppDelegate.m in Sources */,
 				6B7254BC1A0E900900374977 /* main.m in Sources */,
+				B0E0F82E1A0FDB3000AC4849 /* VideoViewController.m in Sources */,
 				6B7254E81A0EB1EF00374977 /* ServerHandler.m in Sources */,
 				6B7254F11A0EF22600374977 /* SplashViewController.m in Sources */,
 			);

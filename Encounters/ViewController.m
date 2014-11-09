@@ -136,6 +136,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    NSLog(@"motion!!!1");
+}
+
+- (IBAction)showVideo:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Video" bundle:nil];
+    UIViewController *vc = [storyboard instantiateInitialViewController];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 #pragma mark ServerDelegate
 
 - (void)responseReceivedForPrompt:(Prompt*)prompt avatar:(NSString*)avatar response:(NSString*)response
