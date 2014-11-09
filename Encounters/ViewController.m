@@ -75,10 +75,10 @@
     CGPoint bottomLeft = CGPointMake(0, CGRectGetMaxY(self.view.bounds) + 20);
     for (int i = 3; i > -1; i--) {
         UIButton *button = self.optionButtons[i];
+        [button sizeToFit];
         button.frame = CGRectInset(button.frame, 0, -20);
-        CGRect frame = CGRectMake(0, bottomLeft.y - CGRectGetHeight(button.frame), CGRectGetWidth(self.view.bounds), CGRectGetHeight(button.frame));
-        bottomLeft = CGPointMake(0, frame.origin.y - INTER_BUTTON_PADDING);
-        button.frame = frame;
+        button.frame = CGRectMake(0, bottomLeft.y - CGRectGetHeight(button.frame), CGRectGetWidth(self.view.bounds), CGRectGetHeight(button.frame));
+        bottomLeft = CGPointMake(0, button.frame.origin.y - INTER_BUTTON_PADDING);
     }
 }
 
@@ -103,9 +103,7 @@
 }
 
 -(void)displayPrompt:(Prompt*)prompt {
-    // XXX doesn't work when called a second time, why?
     self.currentPrompt = prompt;
-
     self.blurView.hidden = NO;
     self.blurView.frame = self.backgroundImage.bounds;
     self.blurView.alpha = 0.0;
@@ -128,10 +126,15 @@
         [button setTitle:option forState:UIControlStateNormal];
         [button sizeToFit];
         button.hidden = NO;
-        button.alpha = 1.0;
         idx++;
     }
-                         [self layoutOptionButtons];
+                          [self layoutOptionButtons];
+                         [UIView animateWithDuration:0.4
+                                          animations:^{
+                                              for (UIButton* button in self.optionButtons) {
+                                                  button.alpha = 1.0;
+                                              }
+                                          }];
         }];
 }
 
