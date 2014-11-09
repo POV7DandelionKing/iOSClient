@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
 
 
+
 @end
 
 @implementation ViewController
@@ -294,6 +295,10 @@
 
 - (void)shake:(CGFloat)seconds
 {
+    if (self.blurView.hidden) {
+        NSLog(@"Shake, but not ready to respond");
+        return;
+    }
     if (![self.currentPrompt canShake]) {
         NSLog(@"Shake, but question doesn't allow shaking");
         return;
