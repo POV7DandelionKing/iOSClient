@@ -20,7 +20,7 @@
 @property (strong, nonatomic) Prompt *currentPrompt;
 @property (strong, nonatomic) Prompt* nextPrompt;
 
-@property (strong, nonatomic) NSMutableDictionary* responses;
+@property (strong, nonatomic) NSDictionary* responses;
 @property (weak, nonatomic) IBOutlet UIButton *filmButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
 @end
@@ -206,6 +206,7 @@
                      animations:^{
                          headView.center = self.view.center;
                      } completion:^(BOOL finished) {
+                         [self displayResponse:response forImageView:headView];
                          [UIView animateWithDuration:0.5
                                                delay:3.0
                                              options:UIViewAnimationOptionCurveEaseInOut
@@ -213,6 +214,43 @@
                                               headView.frame = CGRectOffset(headView.frame, CGRectGetWidth(self.view.frame), 0);
                                           } completion:NULL];
                           }];
+}
+
+-(void)displayResponse:(NSString*)response forImageView:(UIImageView*)view {
+
+    UILabel *textLabel = [[UILabel alloc]initWithFrame:CGRectZero];
+    textLabel.text = response;
+    textLabel.textColor = [UIColor whiteColor];
+    textLabel.alpha = 0.0;
+    textLabel.numberOfLines = 0;
+    textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [self.view addSubview:textLabel];
+    [textLabel sizeToFit];
+    textLabel.center = CGPointMake(CGRectGetMidX(view.frame), CGRectGetMaxY(view.frame) + 20);
+
+
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         textLabel.alpha = 1.0;
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.5
+                                               delay:3.0
+                                             options:UIViewAnimationOptionCurveEaseOut
+                                          animations:^{
+                                              textLabel.alpha = 0.0;
+                                          } completion:^(BOOL finished) {
+                                              [textLabel removeFromSuperview];
+                                          }];
+                     }];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat
+                     animations:^{
+                         view.transform = CGAffineTransformMakeRotation(0.1);
+                     } completion:NULL];
+
 }
 
 -(UIImage*)imageForAvatarIdentifier:(NSString*)avatarIdentifier {
