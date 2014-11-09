@@ -163,7 +163,7 @@
 -(void)optionButtonPressed:(UIButton*)sender {
     [[ServerHandler sharedInstance] respondToPrompt:self.currentPrompt withOption:sender.tag];
     [self hidePrompt];
-    [self performSelector:@selector(showResponses) withObject:nil afterDelay:5.0];
+    [self performSelector:@selector(showResponses) withObject:nil afterDelay:2.0];
 }
 
 #pragma mark - showing responses 
@@ -176,13 +176,14 @@
         [self performSelector:@selector(showResponseforAvatar:) withObject:avatarIdentifier afterDelay:delayForNextResponse];
         delayForNextResponse += displayPeriod;
     }
+    [self performSelector:@selector(displayPrompt:) withObject:self.nextPrompt afterDelay:(delayForNextResponse + displayPeriod)];
 }
 
 -(void)showResponseforAvatar:(NSString*)avatarIdentifier {
     NSString *response = self.responses[avatarIdentifier];
     UIImageView *headView = [[UIImageView alloc]initWithImage:[self imageForAvatarIdentifier:avatarIdentifier]];
     headView.center = self.view.center;
-    headView.frame = CGRectOffset(headView.frame, CGRectGetWidth(self.view.frame), 0);
+    headView.frame = CGRectOffset(headView.frame, -CGRectGetWidth(self.view.frame), 0);
     [self.view addSubview:headView];
     [UIView animateWithDuration:0.5
                           delay:0.0
