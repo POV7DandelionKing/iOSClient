@@ -18,6 +18,11 @@
 @property (strong, nonatomic) NSArray* optionButtons;
 @property (nonatomic, getter=isBlurred) BOOL blurred;
 @property (strong, nonatomic) Prompt *currentPrompt;
+@property (strong, nonatomic) Prompt* nextPrompt;
+
+@property (strong, nonatomic) NSMutableDictionary* responses;
+@property (weak, nonatomic) IBOutlet UIButton *filmButton;
+@property (weak, nonatomic) IBOutlet UIButton *joinButton;
 @end
 
 @implementation ViewController
@@ -28,35 +33,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    ServerHandler *s = [ServerHandler sharedInstance];
-    s.serverDelegate = self;
-    [s fetchAvatars:^(NSArray *avatars, NSString *scene) {
-        NSString *avatar = avatars[0];
-        NSLog(@"joining as %@", avatar);
-        [s joinWithAvatar:avatar scene:scene];
-    }];
-
-  
     // Do any additional setup after loading the view, typically from a nib.
     [self setupBlurView];
     self.promptLabel = [[UILabel alloc]initWithFrame:CGRectZero];
     self.promptLabel.textColor = [UIColor whiteColor];
+    self.promptLabel.font = [UIFont boldSystemFontOfSize:22];
+    self.promptLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.promptLabel.numberOfLines = 0;
     [self.view addSubview:self.promptLabel];
 
-    NSMutableArray *optionsArray = [NSMutableArray new];
-    for (int i = 0; i < 4; i++) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-        button.tag = i;
-        button.hidden = YES;
-        button.tintColor = [UIColor whiteColor];
-        [button addTarget:self action:@selector(optionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [optionsArray addObject:button];
-        [self.view addSubview:button];
-    }
-    self.optionButtons = [optionsArray copy];
+    [self setupOptionButtons];
 }
 
-#define INTER_BUTTON_PADDING 10
+#define INTER_BUTTON_PADDING 2
 
 -(void)setupBlurView {
     UIVisualEffect *blurEffect;
@@ -68,16 +57,64 @@
     self.blurView.hidden = YES;
 }
 
+-(void)setupOptionButtons {
+
+    NSMutableArray *optionsArray = [NSMutableArray new];
+    for (int i = 0; i < 4; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.tag = i;
+        button.hidden = YES;
+        button.tintColor = [UIColor whiteColor];
+        button.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.2];
+        [button addTarget:self action:@selector(optionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [optionsArray addObject:button];
+        [self.view addSubview:button];
+    }
+    self.optionButtons = [optionsArray copy];
+}
+
+-(void)layoutOptionButtons {
+    CGPoint bottomLeft = CGPointMake(0, CGRectGetMaxY(self.view.bounds) + 20);
+    for (int i = 3; i > -1; i--) {
+        UIButton *button = self.optionButtons[i];
+        [button sizeToFit];
+        button.frame = CGRectInset(button.frame, 0, -20);
+        button.frame = CGRectMake(0, bottomLeft.y - CGRectGetHeight(button.frame), CGRectGetWidth(self.view.bounds), CGRectGetHeight(button.frame));
+        bottomLeft = CGPointMake(0, button.frame.origin.y - INTER_BUTTON_PADDING);
+    }
+}
+
 - (IBAction)startEncounterAction:(UIButton *)sender {
+    ServerHandler *s = [ServerHandler sharedInstance];
+    s.serverDelegate = self;
+    [s fetchAvatars:^(NSArray *avatars, NSString *scene) {
+        NSString *avatar = avatars[0];
+        NSLog(@"joining as %@", avatar);
+        [s joinWithAvatar:avatar scene:scene];
+    }];
+
+    [UIView animateWithDuration:0.5 animations:^{
+        self.joinButton.alpha = 0.0;
+        self.filmButton.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        self.joinButton.hidden = YES;
+        self.filmButton.hidden = YES;
+    }];
+
+
 }
 
 -(void)displayPrompt:(Prompt*)prompt {
-    // XXX doesn't work when called a second time, why?
     self.currentPrompt = prompt;
-
     self.blurView.hidden = NO;
     self.blurView.frame = self.backgroundImage.bounds;
     self.blurView.alpha = 0.0;
+
+    self.promptLabel.hidden = NO;
+    self.promptLabel.text = prompt.prompt;
+    [self.promptLabel sizeToFit];
+    self.promptLabel.center = CGPointMake(self.view.center.x, 60);
+
     [UIView animateWithDuration:0.5
                           delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
@@ -85,25 +122,22 @@
                          self.promptLabel.alpha = 1.0;
                      } completion:^(BOOL finished) {
 
-    self.promptLabel.text = prompt.prompt;
-    [self.promptLabel sizeToFit];
-    self.promptLabel.center = CGPointMake(self.view.center.x, 60);
-    self.promptLabel.hidden = NO;
-                         
     int idx = 0;
-    CGPoint nextButtonCenter = CGPointMake(self.view.center.x, CGRectGetMaxY(self.promptLabel.frame) + 60);
     for (NSString* option in prompt.responses) {
         UIButton *button = self.optionButtons[idx];
         [button setTitle:option forState:UIControlStateNormal];
         [button sizeToFit];
-        button.center = nextButtonCenter;
         button.hidden = NO;
-        button.alpha = 1.0;
-
-        nextButtonCenter.y = CGRectGetMaxY(button.frame) + INTER_BUTTON_PADDING;
         idx++;
     }
-                         }];
+                          [self layoutOptionButtons];
+                         [UIView animateWithDuration:0.4
+                                          animations:^{
+                                              for (UIButton* button in self.optionButtons) {
+                                                  button.alpha = 1.0;
+                                              }
+                                          }];
+        }];
 }
 
 -(void)hidePrompt {
@@ -162,7 +196,11 @@
 
 - (void)nextPromptReceived:(Prompt*)prompt
 {
-    [self performSelector:@selector(displayPrompt:) withObject:prompt afterDelay:1.0];
+    if (!self.currentPrompt) {
+        [self displayPrompt:prompt];
+    }
+
+    self.nextPrompt = prompt;
 }
 
 - (void)promptsDone

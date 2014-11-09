@@ -229,6 +229,8 @@
                     </view>
                     <connections>
                         <outlet property="backgroundImage" destination="8rN-XO-lGg" id="s8l-KD-r9q"/>
+                        <outlet property="filmButton" destination="GBG-xz-aMh" id="LgP-wQ-MRO"/>
+                        <outlet property="joinButton" destination="AiF-UE-aw4" id="KUa-g4-OkH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
