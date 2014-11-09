@@ -196,6 +196,9 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundReckroom.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="8rN-XO-lGg">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vMn-uj-wMb">
+                                <rect key="frame" x="140" y="239" width="80" height="60"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AiF-UE-aw4">
                                 <rect key="frame" x="46" y="474" width="174" height="49"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="24"/>
@@ -231,6 +234,7 @@
                         <outlet property="backgroundImage" destination="8rN-XO-lGg" id="s8l-KD-r9q"/>
                         <outlet property="filmButton" destination="GBG-xz-aMh" id="LgP-wQ-MRO"/>
                         <outlet property="joinButton" destination="AiF-UE-aw4" id="KUa-g4-OkH"/>
+                        <outlet property="tvView" destination="vMn-uj-wMb" id="fnq-ST-Bxk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

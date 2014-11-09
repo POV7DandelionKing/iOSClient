@@ -43,6 +43,7 @@
     [self.view addSubview:self.promptLabel];
 
     [self setupOptionButtons];
+    [self setupTV];
 }
 
 #define INTER_BUTTON_PADDING 2
@@ -71,6 +72,20 @@
         [self.view addSubview:button];
     }
     self.optionButtons = [optionsArray copy];
+}
+
+- (void)setupTV
+{
+    NSMutableArray *images = [NSMutableArray array];
+    for (int i=1; i <= 13; i++) {
+        NSString *name = [NSString stringWithFormat:@"still%04d.jpg", i];
+        UIImage *image = [UIImage imageNamed:name];
+        [images addObject:image];
+    }
+    self.tvView.animationImages=images;
+    self.tvView.animationRepeatCount = 0;
+    self.tvView.animationDuration = 10.0;
+    [self.tvView startAnimating];
 }
 
 -(void)layoutOptionButtons {
