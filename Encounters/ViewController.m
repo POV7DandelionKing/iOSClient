@@ -163,6 +163,51 @@
 -(void)optionButtonPressed:(UIButton*)sender {
     [[ServerHandler sharedInstance] respondToPrompt:self.currentPrompt withOption:sender.tag];
     [self hidePrompt];
+    [self performSelector:@selector(showResponses) withObject:nil afterDelay:5.0];
+}
+
+#pragma mark - showing responses 
+
+-(void)showResponses {
+    NSTimeInterval displayPeriod = 5.0;
+    NSTimeInterval delayForNextResponse = 0.0;
+    NSArray *responseAvatars = [self.responses allKeys];
+    for (NSString *avatarIdentifier in responseAvatars) {
+        [self performSelector:@selector(showResponseforAvatar:) withObject:avatarIdentifier afterDelay:delayForNextResponse];
+        delayForNextResponse += displayPeriod;
+    }
+}
+
+-(void)showResponseforAvatar:(NSString*)avatarIdentifier {
+    NSString *response = self.responses[avatarIdentifier];
+    UIImageView *headView = [[UIImageView alloc]initWithImage:[self imageForAvatarIdentifier:avatarIdentifier]];
+    headView.center = self.view.center;
+    headView.frame = CGRectOffset(headView.frame, CGRectGetWidth(self.view.frame), 0);
+    [self.view addSubview:headView];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         headView.center = self.view.center;
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.5
+                                               delay:3.0
+                                             options:UIViewAnimationOptionCurveEaseInOut
+                                          animations:^{
+                                              headView.frame = CGRectOffset(headView.frame, CGRectGetWidth(self.view.frame), 0);
+                                          } completion:NULL];
+                          }];
+}
+
+-(UIImage*)imageForAvatarIdentifier:(NSString*)avatarIdentifier {
+        NSDictionary *imageNamesForIdentifiers = @{@"mac": @"MacHead",
+                                                  @"roberta": @"RobertaHead",
+                                                  @"arlene": @"ArleneHead",
+                                                  @"jeannette": @"Jeanette",
+                                                  @"maria": @"MariaHead"
+                                                   };
+
+    return [UIImage imageNamed:imageNamesForIdentifiers[avatarIdentifier]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -187,6 +232,7 @@
 - (void)responseReceived:(NSDictionary *)responses forPrompt:(Prompt *)prompt
 {
     NSLog(@"got response for %@ %@", responses, prompt);
+    self.responses = responses;
 }
 
 
