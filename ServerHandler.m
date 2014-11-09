@@ -183,7 +183,19 @@
 }
 
 
-
+- (void)reset:(void (^)())success;
+{
+    AFHTTPRequestOperationManager *manager = [self manager];
+    NSString *urlString = [BASE_URL stringByAppendingString:GET_RESET_URL_COMPONTENT];
+    [manager GET:urlString
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          NSLog(@"response %@", responseObject);
+             success();
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           NSLog(@"failure %@", error);
+      }];
+}
 
 
 @end

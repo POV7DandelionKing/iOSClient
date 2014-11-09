@@ -30,11 +30,15 @@
     [super viewDidLoad];
     ServerHandler *s = [ServerHandler sharedInstance];
     s.serverDelegate = self;
-    [s fetchAvatars:^(NSArray *avatars, NSString *scene) {
-        NSString *avatar = avatars[0];
-        NSLog(@"joing as %@", avatar);
-        [s joinWithAvatar:avatar scene:scene];
+    [s reset:^{
+        NSLog(@"resetted");
+        [s fetchAvatars:^(NSArray *avatars, NSString *scene) {
+            NSString *avatar = avatars[0];
+            NSLog(@"joining as %@", avatar);
+            [s joinWithAvatar:avatar scene:scene];
+        }];
     }];
+  
     
     // Do any additional setup after loading the view, typically from a nib.
     [self setupBlurView];

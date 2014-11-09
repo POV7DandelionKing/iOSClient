@@ -15,6 +15,7 @@
 #define GET_QUESTION_URL_COMPONENT @"question"
 #define GET_RESPONSES_URL_COMPOTENT @"responses"
 #define POST_RESPONSE_URL_COMPONTENT @"respond"
+#define GET_RESET_URL_COMPONTENT @"reset"
 
 //typedef id (^SimpleResponse)(parameterTypes);
 
@@ -35,5 +36,6 @@
 - (void)fetchAvatars:(void (^)(NSArray* avatars, NSString* scene))avatarsBlock;
 - (void)joinWithAvatar:(NSString*)avatarId scene:(NSString*)scene;
 - (void)respondToPrompt:(Prompt*)prompt withOption:(NSUInteger)option;
+- (void)reset:(void (^)())success;
 
 @end
