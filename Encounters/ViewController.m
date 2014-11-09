@@ -80,13 +80,14 @@
                           delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.blurView.alpha = 1.0;
+                         self.promptLabel.alpha = 1.0;
                      } completion:^(BOOL finished) {
 
     self.promptLabel.text = prompt.prompt;
     [self.promptLabel sizeToFit];
     self.promptLabel.center = CGPointMake(self.view.center.x, 60);
     self.promptLabel.hidden = NO;
-
+                         
     int idx = 0;
     CGPoint nextButtonCenter = CGPointMake(self.view.center.x, CGRectGetMaxY(self.promptLabel.frame) + 60);
     for (NSString* option in prompt.responses) {
@@ -95,6 +96,7 @@
         [button sizeToFit];
         button.center = nextButtonCenter;
         button.hidden = NO;
+        button.alpha = 1.0;
 
         nextButtonCenter.y = CGRectGetMaxY(button.frame) + INTER_BUTTON_PADDING;
         idx++;
