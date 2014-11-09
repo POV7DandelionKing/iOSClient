@@ -145,13 +145,13 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         self.promptLabel.alpha = 0.0;
+                         self.promptLabel.frame = CGRectMake(CGRectGetMinX(self.promptLabel.frame), 0, CGRectGetWidth(self.promptLabel.frame), CGRectGetHeight(self.promptLabel.frame));
                          for (UIButton *button in self.optionButtons) {
                              button.alpha = 0.0;
                          }
                          self.blurView.alpha = 0.0;
                      } completion:^(BOOL finished) {
-                         self.promptLabel.hidden = YES;
+//                         self.promptLabel.hidden = YES;
                          self.blurView.hidden = YES;
                          for (UIButton *button in self.optionButtons) {
                              button.hidden = YES;
