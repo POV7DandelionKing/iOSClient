@@ -18,7 +18,9 @@
 @property (strong, nonatomic) NSArray* optionButtons;
 @property (nonatomic, getter=isBlurred) BOOL blurred;
 @property (strong, nonatomic) Prompt *currentPrompt;
+@property (strong, nonatomic) Prompt* nextPrompt;
 
+@property (strong, nonatomic) NSMutableDictionary* responses;
 @property (weak, nonatomic) IBOutlet UIButton *filmButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
 @end
@@ -182,7 +184,11 @@
 
 - (void)nextPromptReceived:(Prompt*)prompt
 {
-    [self performSelector:@selector(displayPrompt:) withObject:prompt afterDelay:1.0];
+    if (!self.currentPrompt) {
+        [self displayPrompt:prompt];
+    }
+
+    self.nextPrompt = prompt;
 }
 
 - (void)promptsDone
