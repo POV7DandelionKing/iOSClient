@@ -11,11 +11,10 @@
 
 #define BASE_URL @"http://104.200.31.209:6543/"
 #define GET_LOBBY_URL_COMPONENT @"lobby"
+#define GET_START_URL_COMPONENT @"start"
 #define POST_JOIN_URL_COMPONENT @"join"
-#define GET_QUESTION_URL_COMPONENT @"question"
-#define GET_RESPONSES_URL_COMPOTENT @"responses"
 #define POST_RESPONSE_URL_COMPONTENT @"respond"
-#define GET_RESET_URL_COMPONTENT @"reset"
+
 
 //typedef id (^SimpleResponse)(parameterTypes);
 
@@ -36,6 +35,4 @@
 - (void)fetchAvatars:(void (^)(NSArray* avatars, NSString* scene))avatarsBlock;
 - (void)joinWithAvatar:(NSString*)avatarId scene:(NSString*)scene;
 - (void)respondToPrompt:(Prompt*)prompt withOption:(NSUInteger)option;
-- (void)reset:(void (^)())success;
-
 @end

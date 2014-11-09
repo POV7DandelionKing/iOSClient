@@ -14,8 +14,6 @@
 @interface ServerHandler ()
 @property (strong, nonatomic) NSString* token;
 @property (strong, nonatomic) Prompt* currentPrompt;
-@property (strong, nonatomic) NSMutableArray* notifiedResponses;
-@property (strong, nonatomic) NSTimer *pollTimer;
 @end
 
 @implementation ServerHandler
@@ -44,27 +42,6 @@
     return manager;
 }
 
-- (void)startPolling
-{
-    self.pollTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
-                                                      target:self
-                                                    selector:@selector(poll:)
-                                                    userInfo:nil
-                                                     repeats:YES];
-}
-
-- (void)stopPolling
-{
-    if (self.pollTimer) {
-        [self.pollTimer invalidate];
-    }
-    self.pollTimer = nil;
-}
-
-- (void)poll:(NSTimer*)timer
-{
-    [self fetchResponses];
-}
 
 - (void)fetchAvatars:(void (^)(NSArray *avatars, NSString* scene))avatarsBlock
 {
@@ -74,10 +51,10 @@
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
              NSLog(@"response %@", responseObject);
-             NSArray *sessions = [responseObject objectForKey:@"sessions"];
-             NSDictionary *session = sessions[0];
-             NSArray *avatars = session[@"avatars"];
-             NSString *sceneId = session[@"id"];
+             NSArray *scenes = [responseObject objectForKey:@"scenes"];
+             NSDictionary *scene = scenes[0];
+             NSArray *avatars = scene[@"avatars"];
+             NSString *sceneId = scene[@"id"];
              avatarsBlock(avatars, sceneId);
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -95,38 +72,24 @@
           success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
               NSLog(@"response %@", responseObject);
               self.token = [responseObject objectForKey:@"token"];
-              [self fetchQuestion];
+              [self start];
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               NSLog(@"failure %@", error);
           }];
 }
 
-- (void)fetchQuestion
+- (void)start
 {
     AFHTTPRequestOperationManager *manager = [self manager];
-    NSString *urlString = [BASE_URL stringByAppendingString:GET_QUESTION_URL_COMPONENT];
+    NSString *urlString = [BASE_URL stringByAppendingString:GET_START_URL_COMPONENT];
     [manager GET:urlString
       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-              NSLog(@"response %@", responseObject);
-              self.notifiedResponses = [NSMutableArray array];
-              if ([responseObject[@"question"] isKindOfClass:[NSNull class]]) {
-                  [self.serverDelegate promptsDone];
-              } else {
-                  Prompt *prompt = [Prompt promptWithJSONObject:responseObject];
-                  if (!self.currentPrompt) {
-                      self.currentPrompt = prompt;
-                      [self.serverDelegate nextPromptReceived:prompt];
-                  } else {
-                      if (![self.currentPrompt.identifier isEqualToString:prompt.identifier]) {
-                          self.currentPrompt = prompt;
-                          [self.serverDelegate nextPromptReceived:prompt];
-                      }
-                  }
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              NSLog(@"failure %@", error);
-          }];
+     success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+         NSLog(@"response %@", responseObject);
+         [self parseQuestion:responseObject[@"question"]];
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         NSLog(@"failure %@", error);
+     }];
 }
 
 - (void)respondToPrompt:(Prompt*)prompt withOption:(NSUInteger)option
@@ -138,63 +101,40 @@
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSLog(@"response %@", responseObject);
               [self parseResponses:responseObject[@"responses"]];
-              [self fetchQuestion];
+              [self parseQuestion:responseObject[@"next-question"]];
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               NSLog(@"failure %@", error);
           }];
 }
 
-- (void)fetchResponses
+- (void)parseQuestion:(NSDictionary*)question
 {
-    AFHTTPRequestOperationManager *manager = [self manager];
-    NSString *urlString = [BASE_URL stringByAppendingString:GET_RESPONSES_URL_COMPOTENT];
-    [manager POST:urlString
-       parameters:@{@"question":self.currentPrompt.identifier}
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSLog(@"response %@", responseObject);
-              [self parseResponses:responseObject[@"responses"]];
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              NSLog(@"failure %@", error);
-          }];
+    if ([question isKindOfClass:[NSNull class]]) {
+        [self.serverDelegate promptsDone];
+    } else {
+        Prompt *prompt = [Prompt promptWithJSONObject:question];
+        if (!self.currentPrompt) {
+            self.currentPrompt = prompt;
+            [self.serverDelegate nextPromptReceived:prompt];
+        } else {
+            if (![self.currentPrompt.identifier isEqualToString:prompt.identifier]) {
+                self.currentPrompt = prompt;
+                [self.serverDelegate nextPromptReceived:prompt];
+            }
+        }
+    }
 }
 
 - (void)parseResponses:(NSArray*)responses
 {
-    BOOL finished = YES;
     for (NSDictionary *response in responses) {
         NSString *userId = response[@"user"];
         NSString *answer = response[@"response"];
-        if ([answer isKindOfClass:[NSNull class]]) {
-            finished = NO;
-        } else {
-            if (![self.notifiedResponses containsObject:userId]) {
-                [self.notifiedResponses addObject:userId];
-                [self.serverDelegate responseReceivedForPrompt:self.currentPrompt avatar:userId response:answer];
-            }
+        if (![answer isKindOfClass:[NSNull class]]) {
+            [self.serverDelegate responseReceivedForPrompt:self.currentPrompt avatar:userId response:answer];
         }
     }
-    if (finished) {
-        [self stopPolling];
-        [self.serverDelegate allResponsesReceivedForPrompt:self.currentPrompt];
-        [self fetchQuestion];
-    } else {
-        [self startPolling];
-    }
-}
-
-
-- (void)reset:(void (^)())success;
-{
-    AFHTTPRequestOperationManager *manager = [self manager];
-    NSString *urlString = [BASE_URL stringByAppendingString:GET_RESET_URL_COMPONTENT];
-    [manager GET:urlString
-      parameters:nil
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-          NSLog(@"response %@", responseObject);
-             success();
-      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-           NSLog(@"failure %@", error);
-      }];
+    [self.serverDelegate allResponsesReceivedForPrompt:self.currentPrompt];
 }
 
 
