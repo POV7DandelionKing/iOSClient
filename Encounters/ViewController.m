@@ -19,7 +19,7 @@
 @property (nonatomic, getter=isBlurred) BOOL blurred;
 @property (strong, nonatomic) Prompt *currentPrompt;
 @property (strong, nonatomic) Prompt* nextPrompt;
-
+@property (strong, nonatomic) NSDate *shakeStart;
 @property (strong, nonatomic) NSDictionary* responses;
 @property (weak, nonatomic) IBOutlet UIButton *filmButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
@@ -269,9 +269,28 @@
     // Dispose of any resources that can be recreated.
 }
 
+# pragma mark shake
+
+- (void)shake:(CGFloat)seconds
+{
+    NSLog(@"shake of magnitude %f", seconds);
+}
+
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
-    NSLog(@"motion!!!1");
+    self.shakeStart = [NSDate date];
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    CGFloat duration = fabsf([self.shakeStart timeIntervalSinceNow]);
+    [self shake:duration];
+}
+
+- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    CGFloat duration = fabsf([self.shakeStart timeIntervalSinceNow]);
+    [self shake:duration];
 }
 
 - (IBAction)showVideo:(id)sender
