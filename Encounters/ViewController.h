@@ -10,6 +10,8 @@
 #import "ServerHandler.h"
 @interface ViewController : UIViewController <ServerDelegate>
 @property(nonatomic, weak) IBOutlet UIImageView *tvView;
+@property (weak, nonatomic) IBOutlet UIImageView *tvFrame;
+
 - (IBAction)showVideo:(id)sender;
 @end
 

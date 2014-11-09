@@ -23,6 +23,8 @@
 @property (strong, nonatomic) NSDictionary* responses;
 @property (weak, nonatomic) IBOutlet UIButton *filmButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
+
+
 @end
 
 @implementation ViewController
@@ -111,12 +113,14 @@
     [UIView animateWithDuration:0.5 animations:^{
         self.joinButton.alpha = 0.0;
         self.filmButton.alpha = 0.0;
+        self.tvFrame.alpha = 0.0;
+        self.tvView.alpha = 0.0;
     } completion:^(BOOL finished) {
         self.joinButton.hidden = YES;
         self.filmButton.hidden = YES;
+        self.tvView.hidden = YES;
+        self.tvFrame.hidden = YES;
     }];
-
-
 }
 
 -(void)displayPrompt:(Prompt*)prompt {
@@ -221,12 +225,17 @@
     UILabel *textLabel = [[UILabel alloc]initWithFrame:CGRectZero];
     textLabel.text = response;
     textLabel.textColor = [UIColor whiteColor];
+    textLabel.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.2];
     textLabel.alpha = 0.0;
     textLabel.numberOfLines = 0;
     textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    textLabel.textAlignment = NSTextAlignmentCenter;
+
     [self.view addSubview:textLabel];
     [textLabel sizeToFit];
-    textLabel.center = CGPointMake(CGRectGetMidX(view.frame), CGRectGetMaxY(view.frame) + 20);
+    textLabel.frame = CGRectMake(0, CGRectGetMinX(textLabel.frame), CGRectGetWidth(self.view.bounds), CGRectGetHeight(textLabel.frame));
+    textLabel.frame = CGRectInset(textLabel.frame, 0, -20);
+    textLabel.center = CGPointMake(CGRectGetMidX(view.frame), CGRectGetMaxY(view.frame) + 40);
 
 
     [UIView animateWithDuration:0.5
