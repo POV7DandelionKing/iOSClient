@@ -74,7 +74,7 @@
     self.currentPrompt = prompt;
 
     self.blurView.hidden = NO;
-    self.blurView.frame = self.view.bounds;
+    self.blurView.frame = self.backgroundImage.bounds;
     self.blurView.alpha = 0.0;
     [UIView animateWithDuration:0.5
                           delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
