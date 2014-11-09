@@ -28,7 +28,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [ServerHandler sharedInstance];
+    ServerHandler *s = [ServerHandler sharedInstance];
+    s.serverDelegate = self;
+    [s fetchAvatars:^(NSArray *avatars, NSString *scene) {
+        NSString *avatar = avatars[0];
+        NSLog(@"joining as %@", avatar);
+        [s joinWithAvatar:avatar scene:scene];
+    }];
+
+  
     // Do any additional setup after loading the view, typically from a nib.
     [self setupBlurView];
     self.promptLabel = [[UILabel alloc]initWithFrame:CGRectZero];
@@ -46,8 +54,6 @@
         [self.view addSubview:button];
     }
     self.optionButtons = [optionsArray copy];
-
-    [self performSelector:@selector(displayNextPrompt) withObject:nil afterDelay:3.0];
 }
 
 #define INTER_BUTTON_PADDING 10
@@ -65,13 +71,8 @@
 - (IBAction)startEncounterAction:(UIButton *)sender {
 }
 
--(void)displayNextPrompt {
-    [[ServerHandler sharedInstance]nextPrompt:^(Prompt *prompt) {
-        [self displayPrompt:prompt];
-    }];
-}
-
 -(void)displayPrompt:(Prompt*)prompt {
+    // XXX doesn't work when called a second time, why?
     self.currentPrompt = prompt;
 
     self.blurView.hidden = NO;
@@ -81,13 +82,14 @@
                           delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.blurView.alpha = 1.0;
+                         self.promptLabel.alpha = 1.0;
                      } completion:^(BOOL finished) {
 
     self.promptLabel.text = prompt.prompt;
     [self.promptLabel sizeToFit];
     self.promptLabel.center = CGPointMake(self.view.center.x, 60);
     self.promptLabel.hidden = NO;
-
+                         
     int idx = 0;
     CGPoint nextButtonCenter = CGPointMake(self.view.center.x, CGRectGetMaxY(self.promptLabel.frame) + 60);
     for (NSString* option in prompt.responses) {
@@ -96,6 +98,7 @@
         [button sizeToFit];
         button.center = nextButtonCenter;
         button.hidden = NO;
+        button.alpha = 1.0;
 
         nextButtonCenter.y = CGRectGetMaxY(button.frame) + INTER_BUTTON_PADDING;
         idx++;
@@ -124,7 +127,7 @@
 }
 
 -(void)optionButtonPressed:(UIButton*)sender {
-    [[ServerHandler sharedInstance]respondToPrompt:self.currentPrompt withOption:sender.tag];
+    [[ServerHandler sharedInstance] respondToPrompt:self.currentPrompt withOption:sender.tag];
     [self hidePrompt];
 }
 
@@ -133,6 +136,27 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark ServerDelegate
+
+- (void)responseReceivedForPrompt:(Prompt*)prompt avatar:(NSString*)avatar response:(NSString*)response
+{
+    NSLog(@"got response for %@ %@", avatar, response);
+}
+
+- (void)allResponsesReceivedForPrompt:(Prompt*)prompt
+{
+    NSLog(@"done with question");
+}
+
+- (void)nextPromptReceived:(Prompt*)prompt
+{
+    [self performSelector:@selector(displayPrompt:) withObject:prompt afterDelay:1.0];
+}
+
+- (void)promptsDone
+{
+    NSLog(@"done");
+}
 
 
 @end

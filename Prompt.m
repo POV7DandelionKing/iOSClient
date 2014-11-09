@@ -12,7 +12,7 @@
 
 +(instancetype)_debugResponse {
     Prompt *prompt = [[Prompt alloc]init];
-    prompt.identifier = @1;
+    prompt.identifier = @"1";
     prompt.prompt = @"Do you like multiple choice questions?";
     prompt.responses = @[@"I do indeed!",
                          @"I'm on the fence",
@@ -23,7 +23,6 @@
 
 +(instancetype)promptWithJSONObject:(NSDictionary*)json {
     Prompt *prompt = [[Prompt alloc]init];
-    json = json[@"question"];
     prompt.identifier = json[@"id"];
     prompt.prompt = json[@"prompt"];
 
